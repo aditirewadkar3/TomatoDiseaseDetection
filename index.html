@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CropGuard - Precision Agriculture</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero {
+            position: relative;
+            padding: 6rem 5%;
+            min-height: 500px;
+            background: url('https://images.unsplash.com/photo-1592982537447-6f2aa3c8e421?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80') center/cover no-parallax;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.4) 60%, transparent 100%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+        }
+
+        .badge-subtle {
+            background: rgba(43, 122, 48, 0.1);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            color: #111;
+        }
+        
+        .hero-title em {
+            color: var(--primary);
+            font-style: italic;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: #444;
+            margin-bottom: 2rem;
+            max-width: 80%;
+        }
+
+        .section-features {
+            padding: 5rem 5%;
+            background: #fafafa;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+            max-width: 500px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-large {
+            grid-row: span 2;
+        }
+
+        .feature-img-wrapper {
+            margin-top: 1.5rem;
+            border-radius: 8px;
+            overflow: hidden;
+            flex-grow: 1;
+            background: #f0f0f0;
+        }
+
+        .feature-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .feature-icon-box {
+            width: 40px;
+            height: 40px;
+            background: rgba(43, 122, 48, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .cta-section {
+            background: var(--primary);
+            color: white;
+            padding: 5rem 5%;
+            text-align: center;
+            margin: 4rem 5% 0;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 2rem;
+        }
+
+        .footer {
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            background: #f9f9f9;
+            color: #888;
+            font-size: 0.8rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-links a {
+            margin-left: 1rem;
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            CropGuard
+        </div>
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#">Analytics</a>
+            <a href="#">History</a>
+            <a href="#">Support</a>
+        </div>
+        <div class="nav-actions">
+            <a href="signup.html" class="btn btn-light">Get Started</a>
+            <a href="dashboard.html" class="btn btn-primary">Analyze Crop</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="badge-subtle">PRECISION INTELLIGENCE</div>
+                <h1 class="hero-title">Harvesting<br><em>Resilience</em></h1>
+                <p class="hero-subtitle">Bridge the gap between raw earth and precision technology. Detect crop diseases early with AI-powered vision and real-time agronomist insights.</p>
+                <div style="display: flex; gap: 1rem;">
+                    <a href="signup.html" class="btn btn-primary btn-lg">Get Started</a>
+                    <a href="#" class="btn btn-light btn-lg"><i class="fa-solid fa-play"></i> How it Works</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-features">
+            <div class="section-header">
+                <h2>Cultivating Clarity</h2>
+                <p class="text-secondary mt-1">Our platform transforms complex environmental data into actionable field initiatives.</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card feature-large">
+                    <div class="feature-icon-box"><i class="fa-solid fa-expand"></i></div>
+                    <h3>Instant Leaf Analysis</h3>
+                    <p class="text-secondary mt-1" style="font-size: 0.9rem;">Upload a photo from your mobile device and receive a diagnostic report in seconds. Our AI identifies over 150 crop diseases with 98.4% accuracy.</p>
+                    <div class="feature-img-wrapper">
+                        <img src="https://images.unsplash.com/photo-1592483647460-5047b85e0586?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" class="feature-img" alt="Leaf scanning app">
+                    </div>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon-box"><i class="fa-solid fa-chart-line"></i></div>
+                    <h3>Yield Predictions</h3>
+                    <p class="text-secondary mt-1" style="font-size: 0.9rem;">Model future harvests based on enhanced soil health and atmospheric trends.</p>
+                    <div class="feature-img-wrapper" style="padding: 1rem; background: #fff; display: flex; align-items: flex-end; justify-content: center; gap: 5px;">
+                        <div style="width: 20%; background: #c8e6c9; height: 30%;"></div>
+                        <div style="width: 20%; background: #a5d6a7; height: 50%;"></div>
+                        <div style="width: 20%; background: #81c784; height: 70%;"></div>
+                        <div style="width: 20%; background: #4caf50; height: 90%;"></div>
+                        <div style="width: 20%; background: #2e7d32; height: 80%;"></div>
+                    </div>
+                </div>
+                
+                <div class="feature-card" style="display: flex; flex-direction: row; gap: 1rem; align-items: center;">
+                    <div style="flex: 1;">
+                        <h3>Precision Field Mapping</h3>
+                        <p class="text-secondary mt-1" style="font-size: 0.8rem;">Monitor disease spread and nutrient deficiencies across your entire acreage.</p>
+                    </div>
+                    <div style="width: 120px; height: 80px; border-radius: 8px; overflow: hidden;">
+                        <img src="https://images.unsplash.com/photo-1586771107445-d3ca888129ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" style="width:100%; height:100%; object-fit:cover;" alt="Field map">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <h2>Ready to secure your next harvest?</h2>
+            <p>Join over 12,000 agronomists using CropGuard to increase yield by an average of 18% per season.</p>
+            <a href="signup.html" class="btn btn-light" style="color: var(--primary); font-weight: bold; font-size: 1.1rem; padding: 0.8rem 2rem;">Start Free Analysis</a>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div>&copy; 2024 CropGuard Precision Agriculture. Built for The Resilient Harvest.</div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Contact Expert</a>
+        </div>
+    </footer>
+
+</body>
+</html>
