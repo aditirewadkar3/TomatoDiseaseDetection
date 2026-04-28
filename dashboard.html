@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
         .dashboard-container {
             display: grid;
@@ -40,7 +42,8 @@
             border-right: 3px solid transparent;
         }
 
-        .menu-item:hover, .menu-item.active {
+        .menu-item:hover,
+        .menu-item.active {
             color: var(--primary);
             background: rgba(43, 122, 48, 0.05);
             border-right: 3px solid var(--primary);
@@ -87,7 +90,7 @@
         .action-card:hover {
             border-color: var(--primary);
             background: rgba(43, 122, 48, 0.02);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .action-icon {
@@ -110,7 +113,7 @@
             background: var(--surface);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         }
 
         #video {
@@ -121,7 +124,9 @@
             background: #000;
         }
 
-        #canvas { display: none; }
+        #canvas {
+            display: none;
+        }
 
         #preview-image {
             max-width: 100%;
@@ -129,9 +134,9 @@
             border-radius: 8px;
             margin-top: 1.5rem;
             display: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
         .result-section {
             display: none;
             margin-top: 2rem;
@@ -140,7 +145,7 @@
             background: var(--surface);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
         }
 
@@ -175,18 +180,30 @@
             background: var(--surface);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
         }
-        
+
         @media (max-width: 768px) {
-            .dashboard-container { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-            .action-cards { grid-template-columns: 1fr; }
-            .main-content { padding: 1.5rem; }
+            .dashboard-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                display: none;
+            }
+
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .main-content {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -195,7 +212,8 @@
         </a>
         <div class="user-profile" style="display: flex; align-items: center; gap: 1rem;">
             <span><i class="fa-regular fa-bell" style="font-size: 1.1rem; margin-right: 1rem; color: #555;"></i></span>
-            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; color: white;">
+            <div
+                style="width: 36px; height: 36px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1rem; color: white;">
                 A
             </div>
             <span style="font-weight: 500;">Aditi</span>
@@ -205,12 +223,19 @@
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="sidebar-menu">
-                <a href="#" class="menu-item active" onclick="showDetection(event)"><i class="fa-solid fa-camera-viewfinder"></i> Detection</a>
-                <a href="#" class="menu-item" onclick="showSuggestions(event)"><i class="fa-solid fa-map-location-dot"></i> Suggestions</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-clock-rotate-left"></i> History</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-book-journal-whills"></i> Crop Library</a>
-                <a href="#" class="menu-item"><i class="fa-solid fa-gear"></i> Settings</a>
-                <a href="index.html" class="menu-item" style="margin-top: auto; color: var(--error);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                <a href="#" class="menu-item active" onclick="showDetection(event)"><i
+                        class="fa-solid fa-camera-viewfinder"></i> Detection</a>
+                <a href="#" class="menu-item" onclick="showSuggestions(event)"><i
+                        class="fa-solid fa-map-location-dot"></i> Suggestions</a>
+                <a href="#" class="menu-item" onclick="showHistory(event)"><i class="fa-solid fa-clock-rotate-left"></i>
+                    History</a>
+                <a href="#" class="menu-item" onclick="showCropLibrary(event)"><i
+                        class="fa-solid fa-book-journal-whills"></i> Crop Library</a>
+                <a href="#" class="menu-item" onclick="showSettings(event)"><i class="fa-solid fa-gear"></i>
+                    Settings</a>
+                <a href="#" class="menu-item" onclick="logoutUser(event)"
+                    style="margin-top: auto; color: var(--error);"><i class="fa-solid fa-right-from-bracket"></i>
+                    Logout</a>
             </div>
         </aside>
 
@@ -218,7 +243,8 @@
             <div class="upload-section" id="upload-section">
                 <div class="header-section">
                     <h2>Crop Disease Diagnosis</h2>
-                    <p class="text-secondary mt-1">Upload a clear photo of the affected plant leaf for accurate detection.</p>
+                    <p class="text-secondary mt-1">Upload a clear photo of the affected plant leaf for accurate
+                        detection.</p>
                 </div>
 
                 <div class="action-cards" id="selection-cards">
@@ -226,7 +252,8 @@
                         <i class="fa-solid fa-cloud-arrow-up action-icon"></i>
                         <h3>Upload Image</h3>
                         <p class="text-secondary mt-1" style="font-size: 0.85rem;">JPEG, PNG up to 10MB</p>
-                        <input type="file" id="file-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                        <input type="file" id="file-upload" accept="image/*" style="display: none;"
+                            onchange="handleImageUpload(event)">
                     </div>
 
                     <div class="action-card" onclick="startCamera()">
@@ -241,15 +268,17 @@
                     <video id="video" autoplay playsinline></video>
                     <canvas id="canvas"></canvas>
                     <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-                        <button class="btn btn-light" onclick="stopCamera()"><i class="fa-solid fa-xmark"></i> Cancel</button>
-                        <button class="btn btn-primary" onclick="capturePhoto()"><i class="fa-solid fa-camera-retro"></i> Capture</button>
+                        <button class="btn btn-light" onclick="stopCamera()"><i class="fa-solid fa-xmark"></i>
+                            Cancel</button>
+                        <button class="btn btn-primary" onclick="capturePhoto()"><i
+                                class="fa-solid fa-camera-retro"></i> Capture</button>
                     </div>
                 </div>
 
                 <!-- Result Interface -->
                 <div id="preview-container" class="text-center" style="display: none; width: 100%;">
                     <img id="preview-image" src="" alt="Preview">
-                    
+
                     <div id="loading" style="display: none; margin-top: 2rem;">
                         <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
                         <p class="text-secondary mt-1">Analyzing image. Please wait...</p>
@@ -259,16 +288,19 @@
                         <div class="badge-success">Analysis Complete</div>
                         <h3 style="font-size: 1.8rem; margin-bottom: 0.5rem;" id="disease-name">Early Blight</h3>
                         <p class="text-secondary" style="font-weight: 500;">Confidence: 98.5%</p>
-                        
+
                         <div style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border);">
                             <h4 style="margin-bottom: 1rem;">Recommended Action:</h4>
                             <ul style="color: var(--text-secondary); line-height: 1.8;">
-                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Remove infected leaves immediately.</li>
-                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Apply copper-based fungicides.</li>
-                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Ensure proper spacing between plants to improve air circulation.</li>
+                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Remove
+                                    infected leaves immediately.</li>
+                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Apply
+                                    copper-based fungicides.</li>
+                                <li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> Ensure
+                                    proper spacing between plants to improve air circulation.</li>
                             </ul>
                         </div>
-                        
+
                         <div style="margin-top: 2rem; display: flex; gap: 1rem;">
                             <button class="btn btn-primary" onclick="resetView()">Analyze Another Plant</button>
                         </div>
@@ -280,13 +312,17 @@
             <div class="suggestions-section" id="suggestions-section">
                 <div class="header-section">
                     <h2>Location-Based Suggestions</h2>
-                    <p class="text-secondary mt-1">We use your location to recommend the most optimal crops for your region.</p>
+                    <p class="text-secondary mt-1">We use your location to recommend the most optimal crops for your
+                        region.</p>
                 </div>
-                
-                <div style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+
+                <div
+                    style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); text-align: center;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
                         <h3 style="margin: 0;">Your Farm Location</h3>
-                        <button class="btn btn-outline" onclick="initMapAndLocation()" style="padding: 0.4rem 1rem; font-size: 0.85rem;">
+                        <button class="btn btn-outline" onclick="initMapAndLocation()"
+                            style="padding: 0.4rem 1rem; font-size: 0.85rem;">
                             <i class="fa-solid fa-location-crosshairs"></i> Detect Location
                         </button>
                     </div>
@@ -299,12 +335,166 @@
                     <p class="text-secondary" id="crop-reasoning">Analyzing soil and climate data...</p>
                 </div>
             </div>
+
+            <!-- History Section -->
+            <div class="history-section" id="history-section" style="display: none; width: 100%; max-width: 800px;">
+                <div class="header-section">
+                    <h2>Prediction History</h2>
+                    <p class="text-secondary mt-1">Review your past plant disease diagnoses and suggestions.</p>
+                </div>
+
+                <div id="history-loading" style="text-align: center; margin-top: 2rem; display: none;">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                    <p class="text-secondary mt-1">Loading history...</p>
+                </div>
+
+                <div id="history-container"
+                    style="display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem;">
+                    <!-- History cards will be dynamically injected here -->
+                </div>
+            </div>
+
+            <!-- Crop Library Section -->
+            <div class="crop-library-section" id="crop-library-section"
+                style="display: none; width: 100%; max-width: 1000px;">
+                <div class="header-section">
+                    <h2>Crop Library</h2>
+                    <p class="text-secondary mt-1">Explore detailed information about various crops.</p>
+                </div>
+
+                <!-- Admin Add Crop Section (Hidden for normal users) -->
+                <div id="addCropSection"
+                    style="display: none; margin-bottom: 2rem; background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                    <h3 style="margin-top: 0; color: var(--primary);"><i class="fa-solid fa-plus-circle"></i> Add New
+                        Crop</h3>
+                    <form id="addCropForm"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
+
+                        <input type="text" id="cropName" placeholder="Crop Name *" required class="form-control">
+                        <input type="text" id="cropScientific" placeholder="Scientific Name" class="form-control">
+
+                        <input type="text" id="cropCategory" placeholder="Category (Vegetable/Fruit/Grain)"
+                            class="form-control">
+                        <input type="text" id="cropSeason" placeholder="Season (Kharif/Rabi/Summer)"
+                            class="form-control">
+
+                        <input type="text" id="cropSoil" placeholder="Soil Type" class="form-control">
+                        <input type="text" id="cropWater" placeholder="Water Requirement" class="form-control">
+
+                        <input type="text" id="cropClimate" placeholder="Climate (Tropical/Temperate)"
+                            class="form-control">
+                        <input type="text" id="cropTemperature" placeholder="Temperature Range (e.g. 20-30°C)"
+                            class="form-control">
+
+                        <input type="text" id="cropHumidity" placeholder="Humidity (e.g. 60-80%)" class="form-control">
+                        <input type="text" id="cropSunlight" placeholder="Sunlight (Full Sun/Partial)"
+                            class="form-control">
+
+                        <input type="text" id="cropImage" placeholder="Image URL" class="form-control">
+
+                        <textarea id="cropDescription" placeholder="Crop Description"
+                            style="grid-column: 1 / -1; padding: 0.8rem; border-radius: 8px;"></textarea>
+
+                        <div style="grid-column: 1 / -1; display: flex; justify-content: flex-end;">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-check"></i> Save Crop
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div id="crops-loading" style="text-align: center; margin-top: 2rem; display: none;">
+                    <i class="fa-solid fa-circle-notch fa-spin" style="font-size: 2rem; color: var(--primary);"></i>
+                    <p class="text-secondary mt-1">Loading crops...</p>
+                </div>
+
+                <div id="crops-container"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                    <!-- Crop cards will be dynamically injected here -->
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="settings-section" id="settings-section" style="display: none; width: 100%; max-width: 800px;">
+                <div class="header-section">
+                    <h2>Settings</h2>
+                    <p class="text-secondary mt-1">Manage your account and security preferences.</p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 2rem;">
+                    <!-- Account Settings -->
+                    <div
+                        style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                        <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary);"><i
+                                class="fa-solid fa-user"></i> Account Details</h3>
+                        <form id="profileForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">Full
+                                    Name</label>
+                                <input type="text" id="profileName" required class="form-control"
+                                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border);">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">Email
+                                    Address</label>
+                                <input type="email" id="profileEmail" readonly class="form-control"
+                                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border); background: #f9f9f9; cursor: not-allowed; color: #666;">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">Account
+                                    Created</label>
+                                <p id="profileCreated"
+                                    style="margin: 0; padding: 0.8rem 0; color: var(--text-primary); font-size: 0.9rem;">
+                                    Loading...</p>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+                                <button type="submit" class="btn btn-primary"><i class="fa-solid fa-save"></i> Update
+                                    Profile</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div
+                        style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                        <h3 style="margin-top: 0; margin-bottom: 1rem; color: var(--text-primary);"><i
+                                class="fa-solid fa-lock"></i> Security</h3>
+                        <form id="passwordForm" style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">Old
+                                    Password</label>
+                                <input type="password" id="oldPassword" required class="form-control"
+                                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border);">
+                            </div>
+                            <div>
+                                <label
+                                    style="display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.3rem;">New
+                                    Password</label>
+                                <input type="password" id="newPassword" required class="form-control"
+                                    style="width: 100%; padding: 0.8rem; border-radius: 8px; border: 1px solid var(--border);">
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+                                <button type="submit" class="btn btn-outline"
+                                    style="border-color: var(--primary); color: var(--primary);"><i
+                                        class="fa-solid fa-key"></i> Change Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
     <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <!-- JavaScript logic for Dashboard interaction -->
-    <script src="js/dashboard.js"></script>
+    <script src="js/dashboard.js?v=3"></script>
 </body>
+
 </html>

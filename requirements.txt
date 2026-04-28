@@ -3,3 +3,7 @@ uvicorn
 python-multipart
 ultralytics
 Pillow
+mysql-connector-python
+pydantic
+google-generativeai
+python-dotenv

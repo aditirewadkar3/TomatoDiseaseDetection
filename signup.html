@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - CropGuard</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
     <style>
         body {
             background-color: var(--surface-alt);
@@ -20,7 +21,7 @@
             max-width: 1000px;
             background: #fff;
             border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
             display: flex;
             overflow: hidden;
             min-height: 600px;
@@ -35,7 +36,7 @@
             flex-direction: column;
             justify-content: flex-end;
         }
-        
+
         .auth-banner h1 {
             color: white;
             font-size: 2.5rem;
@@ -51,7 +52,7 @@
         .stats {
             display: flex;
             gap: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             padding-top: 1.5rem;
         }
 
@@ -90,32 +91,45 @@
             display: flex;
             align-items: center;
             text-align: center;
-            color: rgba(0,0,0,0.3);
+            color: rgba(0, 0, 0, 0.3);
             font-size: 0.8rem;
             margin: 1.5rem 0;
         }
 
-        .divider::before, .divider::after {
+        .divider::before,
+        .divider::after {
             content: '';
             flex: 1;
             border-bottom: 1px solid var(--border);
         }
 
-        .divider::before { margin-right: .5em; }
-        .divider::after { margin-left: .5em; }
+        .divider::before {
+            margin-right: .5em;
+        }
+
+        .divider::after {
+            margin-left: .5em;
+        }
 
         @media (max-width: 800px) {
-            .auth-banner { display: none; }
-            .auth-form-wrapper { padding: 2.5rem; }
+            .auth-banner {
+                display: none;
+            }
+
+            .auth-form-wrapper {
+                padding: 2.5rem;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <div class="auth-container">
         <div class="auth-banner">
             <h1>CropGuard</h1>
-            <p>Precision agriculture for the next generation of resilient harvests. Join thousands of agronomists today.</p>
+            <p>Precision agriculture for the next generation of resilient harvests. Join thousands of agronomists today.
+            </p>
             <div class="stats">
                 <div class="stat">
                     <h3>12k+</h3>
@@ -127,19 +141,20 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="auth-form-wrapper">
             <div class="auth-header">
                 <h2>Create an account</h2>
                 <p class="text-secondary">Start your journey toward data-driven cultivation.</p>
             </div>
-            
-            <form onsubmit="event.preventDefault(); window.location.href='dashboard.html#suggestions';">
+
+            <form id="signupForm">
+                <div id="signupMessage" style="margin-bottom: 1rem; text-align: center; color: red;"></div>
                 <div class="form-group">
                     <label>Full Name</label>
                     <div class="input-with-icon">
                         <i class="fa-solid fa-user"></i>
-                        <input type="text" class="form-control" placeholder="Johnathan Miller" required>
+                        <input type="text" id="signupName" class="form-control" placeholder="Johnathan Miller" required>
                     </div>
                 </div>
 
@@ -147,15 +162,16 @@
                     <label>Email Address</label>
                     <div class="input-with-icon">
                         <i class="fa-solid fa-envelope"></i>
-                        <input type="email" class="form-control" placeholder="miller@farm.com" required>
+                        <input type="email" id="signupEmail" class="form-control" placeholder="miller@farm.com"
+                            required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label>Password</label>
                     <div class="input-with-icon">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" class="form-control" placeholder="••••••••" required>
+                        <input type="password" id="signupPassword" class="form-control" placeholder="••••••••" required>
                     </div>
                 </div>
 
@@ -164,10 +180,45 @@
                 </button>
             </form>
 
+            <script>
+                document.getElementById('signupForm').addEventListener('submit', async function (event) {
+                    event.preventDefault(); // Prevent default form submission
+
+                    const name = document.getElementById('signupName').value;
+                    const email = document.getElementById('signupEmail').value;
+                    const password = document.getElementById('signupPassword').value;
+                    const messageDiv = document.getElementById('signupMessage');
+
+                    try {
+                        const response = await fetch('/signup', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name, email, password })
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            alert("Signup successful! Please login.");
+                            window.location.href = 'login.html';
+                        } else {
+                            messageDiv.style.color = 'red';
+                            messageDiv.innerText = data.error || "Signup failed.";
+                        }
+                    } catch (error) {
+                        messageDiv.style.color = 'red';
+                        messageDiv.innerText = "An error occurred connecting to the server.";
+                    }
+                });
+            </script>
+
             <div class="divider">OR</div>
-            
+
             <button class="btn btn-light" style="width: 100%;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" style="width: 16px; margin-right: 8px;"> Continue with Google
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google"
+                    style="width: 16px; margin-right: 8px;"> Continue with Google
             </button>
 
             <p style="text-align: center; margin-top: 2rem; font-size: 0.9rem;" class="text-secondary">
@@ -177,9 +228,11 @@
     </div>
 
     <div style="position: absolute; bottom: 20px; width: 100%; text-align: center; color: #888; font-size: 0.75rem;">
-        &copy; 2024 CropGuard Precision Agriculture. Built for The Resilient Harvest. 
-        <span style="margin-left: 10px;"><a href="#" style="color:#888;">Privacy Policy</a> &nbsp; <a href="#" style="color:#888;">Terms of Service</a></span>
+        &copy; 2024 CropGuard Precision Agriculture. Built for The Resilient Harvest.
+        <span style="margin-left: 10px;"><a href="#" style="color:#888;">Privacy Policy</a> &nbsp; <a href="#"
+                style="color:#888;">Terms of Service</a></span>
     </div>
 
 </body>
+
 </html>

@@ -13,10 +13,20 @@ const diseaseNameEl = document.getElementById('disease-name');
 
 const uploadSection = document.getElementById('upload-section');
 const suggestionsSection = document.getElementById('suggestions-section');
+const historySection = document.getElementById('history-section');
+const cropLibrarySection = document.getElementById('crop-library-section');
+const settingsSection = document.getElementById('settings-section');
 const menuItems = document.querySelectorAll('.menu-item');
 const cropRecommendation = document.getElementById('crop-recommendation');
 const suggestedCropEl = document.getElementById('suggested-crop');
 const cropReasoningEl = document.getElementById('crop-reasoning');
+
+// Profile Elements
+const navbarUserName = document.querySelector('.user-profile span[style*="font-weight: 500"]');
+const navbarUserAvatar = document.querySelector('.user-profile div');
+const profileNameInput = document.getElementById('profileName');
+const profileEmailInput = document.getElementById('profileEmail');
+const profileCreatedEl = document.getElementById('profileCreated');
 
 let currentStream = null;
 let map = null;
@@ -107,8 +117,13 @@ function setupPreview(imageUrl, imageFile) {
 async function analyzeImage(imageFile) {
     loading.style.display = 'block';
     
+    // Get user ID from localStorage
+    const userData = localStorage.getItem('user');
+    const userId = userData ? JSON.parse(userData).id : 1; // Fallback to 1 for demo if not logged in
+
     const formData = new FormData();
     formData.append('file', imageFile);
+    formData.append('user_id', userId);
     
     try {
         const response = await fetch('/predict', {
@@ -138,7 +153,21 @@ function showResults(result) {
     diseaseNameEl.innerText = result.name;
     document.querySelector('.result-section p').innerText = `Confidence: ${result.confidence}`;
     
+    // Display Gemini Reasoning
+    const reasoningEl = document.createElement('p');
+    reasoningEl.className = 'text-secondary mt-1';
+    reasoningEl.style.fontStyle = 'italic';
+    reasoningEl.innerText = result.reason;
+    
     const actionsList = document.querySelector('.result-section ul');
+    // Clear and add reasoning before actions
+    const header = document.querySelector('.result-section h4');
+    const existingReason = header.previousElementSibling;
+    if (existingReason && existingReason.tagName === 'P' && existingReason.style.fontStyle === 'italic') {
+        existingReason.remove();
+    }
+    header.parentNode.insertBefore(reasoningEl, header);
+
     actionsList.innerHTML = '';
     result.actions.forEach(action => {
         actionsList.innerHTML += `<li><i class="fa-solid fa-check text-primary" style="margin-right: 0.5rem;"></i> ${action}</li>`;
@@ -170,32 +199,88 @@ function resetView() {
 
 // ---- New Location & Suggestion Features ----
 
+// Helper to hide all main sections
+function hideAllSections() {
+    uploadSection.style.display = 'none';
+    suggestionsSection.style.display = 'none';
+    historySection.style.display = 'none';
+    cropLibrarySection.style.display = 'none';
+    settingsSection.style.display = 'none';
+}
+
 // Switch to Detection View
 function showDetection(event) {
     if(event) event.preventDefault();
+    hideAllSections();
+    
     // Update Sidebar
     menuItems.forEach(item => item.classList.remove('active'));
     if(event) event.currentTarget.classList.add('active');
+    else menuItems[0].classList.add('active');
     
-    // Switch View
-    suggestionsSection.style.display = 'none';
     uploadSection.style.display = 'block';
 }
 
 // Switch to Suggestions View
 function showSuggestions(event) {
     if(event) event.preventDefault();
+    hideAllSections();
+    
     // Update Sidebar
     menuItems.forEach(item => item.classList.remove('active'));
     if(event) event.currentTarget.classList.add('active');
+    else menuItems[1].classList.add('active');
     
-    // Switch View
-    uploadSection.style.display = 'none';
     suggestionsSection.style.display = 'block';
 
     // Must invalidate map size when making container visible
     if(map) {
         setTimeout(() => map.invalidateSize(), 100);
+    }
+}
+
+// Switch to History View
+function showHistory(event) {
+    if(event) event.preventDefault();
+    hideAllSections();
+    
+    menuItems.forEach(item => item.classList.remove('active'));
+    if(event) event.currentTarget.classList.add('active');
+    
+    historySection.style.display = 'block';
+    loadHistory();
+}
+
+// Switch to Crop Library View
+function showCropLibrary(event) {
+    if(event) event.preventDefault();
+    hideAllSections();
+    
+    menuItems.forEach(item => item.classList.remove('active'));
+    if(event) event.currentTarget.classList.add('active');
+    
+    cropLibrarySection.style.display = 'block';
+    loadCrops();
+}
+
+// Switch to Settings View
+function showSettings(event) {
+    if(event) event.preventDefault();
+    hideAllSections();
+    
+    menuItems.forEach(item => item.classList.remove('active'));
+    if(event) event.currentTarget.classList.add('active');
+    
+    settingsSection.style.display = 'block';
+    populateProfile();
+}
+
+// Logout User
+function logoutUser(event) {
+    if(event) event.preventDefault();
+    if(confirm("Are you sure you want to logout?")) {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
     }
 }
 
@@ -267,11 +352,171 @@ function updateLocationAndSuggest(lat, lng) {
     }, 1500);
 }
 
+// User Profile Population
+function populateProfile() {
+    const userData = localStorage.getItem('user');
+    if (userData) {
+        const user = JSON.parse(userData);
+        if (navbarUserName) navbarUserName.innerText = user.name;
+        if (navbarUserAvatar) navbarUserAvatar.innerText = user.name.charAt(0).toUpperCase();
+        if (profileNameInput) profileNameInput.value = user.name;
+        if (profileEmailInput) profileEmailInput.value = user.email;
+        if (profileCreatedEl) profileCreatedEl.innerText = "Member since 2024";
+    }
+}
+
+// Load History from Backend
+async function loadHistory() {
+    const historyContainer = document.getElementById('history-container');
+    if (!historyContainer) return;
+    
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+        historyContainer.innerHTML = '<p class="text-secondary">Please login to view your history.</p>';
+        return;
+    }
+    const userId = JSON.parse(userData).id;
+
+    // Show loading
+    document.getElementById('history-loading').style.display = 'block';
+    historyContainer.innerHTML = '';
+    
+    try {
+        const response = await fetch(`/history/${userId}`);
+        const data = await response.json();
+        
+        document.getElementById('history-loading').style.display = 'none';
+        
+        if (data.history && data.history.length > 0) {
+            data.history.forEach(item => {
+                const imgPath = item.image_path.replace(/\\/g, '/'); // Fix Windows paths
+                historyContainer.innerHTML += `
+                    <div class="crop-suggestion-card" style="margin-top: 0; padding: 1.2rem; display: flex; gap: 1.5rem; align-items: center;">
+                        <img src="/${imgPath}" style="width: 80px; height: 80px; object-fit: cover; border-radius: 8px;">
+                        <div style="flex: 1;">
+                            <h4 style="margin: 0;">${item.result}</h4>
+                            <p class="text-secondary" style="font-size: 0.8rem; margin: 0.2rem 0 0 0;">Detected on ${item.created_at}</p>
+                        </div>
+                        <div style="text-align: right;">
+                            <span class="badge-success" style="margin: 0; font-size: 0.75rem;">${item.confidence}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            historyContainer.innerHTML = '<p class="text-secondary">No prediction history found.</p>';
+        }
+    } catch (error) {
+        console.error("History Error:", error);
+        document.getElementById('history-loading').style.display = 'none';
+        historyContainer.innerHTML = '<p class="text-error">Error loading history.</p>';
+    }
+}
+
+// Load Mock Crops
+function loadCrops() {
+    const cropsContainer = document.getElementById('crops-container');
+    if (!cropsContainer) return;
+    
+    document.getElementById('crops-loading').style.display = 'block';
+    cropsContainer.innerHTML = '';
+    
+    setTimeout(() => {
+        document.getElementById('crops-loading').style.display = 'none';
+        const crops = [
+            { name: "Tomato", category: "Vegetable", season: "Year-round" },
+            { name: "Wheat", category: "Grain", season: "Rabi" },
+            { name: "Rice", category: "Grain", season: "Kharif" }
+        ];
+        
+        crops.forEach(crop => {
+            cropsContainer.innerHTML += `
+                <div class="action-card" style="min-height: auto; padding: 1.5rem; text-align: left; align-items: flex-start;">
+                    <h4 style="margin: 0; color: var(--primary);">${crop.name}</h4>
+                    <p class="text-secondary" style="font-size: 0.85rem; margin-top: 0.5rem;">${crop.category} • ${crop.season}</p>
+                    <button class="btn btn-outline" style="margin-top: 1rem; width: 100%; padding: 0.4rem; font-size: 0.8rem;">View Details</button>
+                </div>
+            `;
+        });
+    }, 800);
+}
+
 // Check if URL has #suggestions hash (e.g. from signup page redirect)
 window.addEventListener('load', () => {
+    populateProfile();
+    
     if(window.location.hash === '#suggestions') {
         const suggestionTab = document.querySelectorAll('.menu-item')[1];
         showSuggestions({ currentTarget: suggestionTab, preventDefault: () => {} });
         initMapAndLocation();
     }
 });
+
+// Handle Profile Update
+const profileForm = document.getElementById('profileForm');
+if (profileForm) {
+    profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+        const user = JSON.parse(userData);
+        const newName = document.getElementById('profileName').value;
+
+        try {
+            const response = await fetch('/update_profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.id, name: newName })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert("Profile updated successfully!");
+                // Update localStorage
+                user.name = newName;
+                localStorage.setItem('user', JSON.stringify(user));
+                // Update UI
+                populateProfile();
+            } else {
+                alert(data.error || "Failed to update profile");
+            }
+        } catch (err) {
+            console.error("Profile update error:", err);
+            alert("An error occurred. Please try again.");
+        }
+    });
+}
+
+// Handle Password Change
+const passwordForm = document.getElementById('passwordForm');
+if (passwordForm) {
+    passwordForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userData = localStorage.getItem('user');
+        if (!userData) return;
+        const user = JSON.parse(userData);
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        try {
+            const response = await fetch('/change_password', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    user_id: user.id, 
+                    old_password: oldPassword, 
+                    new_password: newPassword 
+                })
+            });
+            const data = await response.json();
+            if (response.ok) {
+                alert("Password changed successfully!");
+                passwordForm.reset();
+            } else {
+                alert(data.error || "Failed to change password");
+            }
+        } catch (err) {
+            console.error("Password change error:", err);
+            alert("An error occurred. Please try again.");
+        }
+    });
+}
